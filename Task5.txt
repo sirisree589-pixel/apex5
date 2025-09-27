@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Divya Sree Portfolio & Shop</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Global Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    background: #f4f4f9;
+    color: #333;
+}
+header {
+    background: linear-gradient(90deg,#4caf50,#81c784);
+    color: white;
+    padding: 20px 10px;
+    text-align: center;
+}
+header h1 { margin: 0; }
+nav { margin-top: 10px; }
+nav a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+nav a:hover { text-decoration: underline; }
+
+/* Main Section */
+section { padding: 50px 20px; max-width: 1200px; margin: auto; }
+h2 { text-align: center; margin-bottom: 30px; }
+
+/* Portfolio Grid */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+.portfolio-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.portfolio-card:hover { transform: scale(1.05); }
+.portfolio-card img { width: 100%; border-radius: 10px; }
+
+/* To-Do List */
+.todo-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.todo-container h3 { text-align: center; }
+.todo-container input {
+    width: 70%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.todo-container button {
+    padding: 10px 15px;
+    border: none;
+    background: #4caf50;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.todo-container button:hover { background: #388e3c; }
+ul.todo-list { list-style: none; padding: 0; }
+ul.todo-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Responsive Image */
+img.lazy { opacity: 0; transition: opacity 0.5s ease-in; }
+img.lazy.loaded { opacity: 1; }
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #2e7d32;
+    color: white;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Divya Sree Portfolio & Shop</h1>
+    <nav>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#todo">To-Do</a>
+        <a href="#shop">Shop</a>
+    </nav>
+</header>
+
+<section id="portfolio">
+    <h2>Portfolio Projects</h2>
+    <div class="portfolio-grid">
+        <div class="portfolio-card">
+            <img class="lazy" data-src="https://via.placeholder.com/400x200.png?text=Project+1" alt="Project 1">
+            <h3>Personal Website</h3>
+            <p>A dynamic responsive website built with HTML, CSS, and JS.</p>
+        </div>
+        <div class="portfolio-card">
+            <img class="lazy" data-src="https://via.placeholder.com/400x200.png?text=Project+2" alt="Project 2">
+            <h3>E-commerce Mockup</h3>
+            <p>Online shop layout with filtering and sorting features.</p>
+        </div>
+        <div class="portfolio-card">
+            <img class="lazy" data-src="https://via.placeholder.com/400x200.png?text=Project+3" alt="Project 3">
+            <h3>Note App</h3>
+            <p>A simple note-taking app with local storage functionality.</p>
+        </div>
+    </div>
+</section>
+
+<section id="todo">
+    <h2>To-Do List</h2>
+    <div class="todo-container">
+        <h3>Tasks</h3>
+        <input type="text" id="taskInput" placeholder="Add a new task">
+        <button onclick="addTask()">Add</button>
+        <ul class="todo-list" id="taskList"></ul>
+    </div>
+</section>
+
+<section id="shop">
+    <h2>Shop Preview</h2>
+    <p style="text-align:center;">Dynamic product listing with sorting options (static preview)</p>
+</section>
+
+<footer>
+    &copy; 2025 Divya Sree. All Rights Reserved.
+</footer>
+
+<script>
+// Lazy load images
+document.addEventListener("DOMContentLoaded", function() {
+    let lazyImages = document.querySelectorAll("img.lazy");
+    let observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+                let img = entry.target;
+                img.src = img.dataset.src;
+                img.classList.add('loaded');
+                obs.unobserve(img);
+            }
+        });
+    });
+    lazyImages.forEach(img => observer.observe(img));
+});
+
+// To-Do List functionality
+function addTask() {
+    let input = document.getElementById('taskInput');
+    if(input.value.trim() === "") return;
+    let li = document.createElement('li');
+    li.textContent = input.value;
+    let removeBtn = document.createElement('button');
+    removeBtn.textContent = 'X';
+    removeBtn.onclick = () => li.remove();
+    li.appendChild(removeBtn);
+    document.getElementById('taskList').appendChild(li);
+    input.value = "";
+}
+</script>
+
+</body>
+</html>
