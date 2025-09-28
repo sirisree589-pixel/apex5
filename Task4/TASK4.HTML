@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Divya Sree - Full Project</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    header { background: #333; color: #fff; padding: 1rem; text-align: center; }
+    nav a { color: #fff; margin: 0 1rem; text-decoration: none; }
+    section { padding: 2rem; }
+    footer { text-align: center; background: #333; color: #fff; padding: 1rem; margin-top: 1rem; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 5px 0; }
+
+    /* To-Do List */
+    #taskInput { padding: 5px; }
+    button { padding: 6px 12px; margin: 5px; cursor: pointer; }
+    #taskList li { background: #f4f4f4; padding: 8px; cursor: pointer; }
+
+    /* Product Listing */
+    #products div { border: 1px solid #ddd; margin: 10px auto; padding: 10px; width: 200px; }
+    label { margin-right: 15px; }
+    h2 { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+  <!-- Portfolio -->
+  <header>
+    <h1>Divya Sree</h1>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#todo">To-Do App</a>
+      <a href="#product">Products</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>Hello! I am <b>Divya Sree</b>, a CSE student who enjoys <b>Studying</b> and <b>Coding</b>. 
+       Passionate about building web applications and learning new technologies.</p>
+  </section>
+
+  <section id="projects">
+    <h2>My Projects</h2>
+    <ul>
+      <li>Portfolio Website</li>
+      <li>To-Do List App</li>
+      <li>Product Listing Page</li>
+    </ul>
+  </section>
+
+  <!-- To-Do App -->
+  <section id="todo">
+    <h2>To-Do List</h2>
+    <input id="taskInput" placeholder="Enter a task">
+    <button onclick="addTask()">Add</button>
+    <ul id="taskList"></ul>
+  </section>
+
+  <!-- Product Listing -->
+  <section id="product">
+    <h2>Product Listing</h2>
+    <label>Filter by Category: 
+      <select id="categoryFilter" onchange="renderProducts()">
+        <option value="all">All</option>
+        <option value="electronics">Electronics</option>
+        <option value="clothing">Clothing</option>
+      </select>
+    </label>
+
+    <label>Sort by Price: 
+      <select id="sortFilter" onchange="renderProducts()">
+        <option value="asc">Low → High</option>
+        <option value="desc">High → Low</option>
+      </select>
+    </label>
+
+    <div id="products"></div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Email: divyasree@example.com</p>
+  </section>
+
+  <footer>© 2025 Divya Sree</footer>
+
+  <script>
+    // ========== To-Do List ==========
+    let taskList = document.getElementById("taskList");
+
+    function loadTasks() {
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      taskList.innerHTML = "";
+      tasks.forEach((t, i) => {
+        let li = document.createElement("li");
+        li.textContent = t;
+        li.onclick = () => removeTask(i);
+        taskList.appendChild(li);
+      });
+    }
+
+    function addTask() {
+      let input = document.getElementById("taskInput");
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      if (input.value.trim() !== "") {
+        tasks.push(input.value);
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        input.value = "";
+        loadTasks();
+      }
+    }
+
+    function removeTask(index) {
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      tasks.splice(index, 1);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      loadTasks();
+    }
+
+    // ========== Product Listing ==========
+    const products = [
+      { name: "Laptop", category: "electronics", price: 800 },
+      { name: "Shirt", category: "clothing", price: 20 },
+      { name: "Headphones", category: "electronics", price: 50 },
+      { name: "Jeans", category: "clothing", price: 40 }
+    ];
+
+    function renderProducts() {
+      let category = document.getElementById("categoryFilter").value;
+      let sort = document.getElementById("sortFilter").value;
+
+      let filtered = products.filter(p => category === "all" || p.category === category);
+      filtered.sort((a, b) => sort === "asc" ? a.price - b.price : b.price - a.price);
+
+      let container = document.getElementById("products");
+      container.innerHTML = filtered.map(p => `<div>${p.name} - $${p.price}</div>`).join("");
+    }
+
+    // Initialize
+    window.onload = () => {
+      loadTasks();
+      renderProducts();
+    }
+  </script>
+</body>
+</html>
